@@ -1,14 +1,11 @@
----
 apiVersion: v1
 kind: Service
 metadata:
   name: octopus-db-service
-  namespace: octopus-homolog
   labels:
     app: octopus-db
+    namespace: octopus-homolog
 spec:
-        #externalName: octopus-db-service.octopus-homolog.svc.cluster.local
-  #type: ExternalName
   ports:
     - port: 5432
   selector:
