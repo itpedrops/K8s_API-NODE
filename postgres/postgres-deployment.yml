@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: octopus-db
+  namespace: octopus-homolog
+  labels:
+    app: octopus-db
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: octopus-db
+  template:
+    metadata:
+      labels:
+        app: octopus-db
+    spec:
+      containers:
+      - image: postgres:12-alpine
+        name: octopus-db
+        env:
+        - name: POSTGRES_PASSWORD
+          value: $COLOCAR_SENHA_USER
+        - name: POSTGRES_DB
+          value: $COLOCAR_NOME_DATABASE
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        ports:
+        - containerPort: 5432
+          name: octopus-db
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "512Mi"
+          limits:
+            cpu: "1000m"
+            memory: "4096Mi"
+
+        volumeMounts:
+        - name: octopus-db-volume
+          mountPath: /var/lib/postgresql/data
+#        env:
+#        - name: POSTGRES_PASSWORD
+#          value: $COLOCAR_SENHA_USER
+#        - name: POSTGRES_DB
+#          value: $COLOCAR_NOME_DATABASE
+#        - name: PGDATA
+#          value: /var/lib/postgresql/data/pgdata
+
+      volumes:
+      - name: octopus-db-volume
+        persistentVolumeClaim:
+          claimName: octopus-db-pvc
