@@ -1,0 +1,14 @@
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: octopus-api
+  namespace: octopus-homolog
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: octopus-api
+  minReplicas: 3
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 50
