@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: octopus-api
+  namespace: octopus-homolog
+  labels:
+    app: octopus-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: octopus-api
+  template:
+    metadata:
+      labels:
+        app: octopus-api
+    spec:
+      containers:
+      - name: octopus-api
+        image: gru.ocir.io/skyonecloud/control-api-octopus/apicontrol:v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        env:
+        - name: API_URL
+          value: "http://control.api.k8s.skyone.guru:8085/api/"
+        - name: SPRING_DATASOURCE_URL
+          value: "jdbc:postgresql://octopus-db-service:5432/octopus"
+        - name: SPRING_DATASOURCE_USERNAME
+          value: $colocar_senha_postgres
+        - name: SPRING_DATASOURCE_PASSWORD
+          value: $colocarsenha_postgres
+        - name: ACTIVEMQ_HOST
+          value: octopus-fila-service
+        - name: ACTIVEMQ_PORT
+          value: "61616"
+        - name: MOCKAR_SERVICOS
+          value: HEISHOP         
+        resources:
+          requests:
+            cpu: "1024m"
+            memory: "1024Mi"
+          limits:
+            cpu: "1024m"
+            memory: "2048Mi"
+#      imagePullPolicy: "ifNotPresent"
+      imagePullSecrets:
+      - name: ocirsecret
