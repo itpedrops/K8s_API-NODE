@@ -1,0 +1,32 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: octopus-homolog
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ubuntu-debug
+  namespace: octopus-homolog
+spec:
+  selector:
+    matchLabels:
+      app: ubuntu-debug
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ubuntu-debug
+    spec:
+      containers:
+      - name: ubuntu-debug
+#        image: sa-saopaulo-1.ocir.io/tenancy/k8s_octopus-api/ubuntu-debug:1.0.0
+        command:
+          - "sleep"
+          - "604800"
+        #image: sa-saopaulo-1.ocir.io/tenancy/k8s_octopus-api/nginx
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: ocirsecret
