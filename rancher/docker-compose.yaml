@@ -1,1 +1,13 @@
 ###Compose File Docker Rancher OCI
+version: '3.3'
+services:
+    run:
+        container_name: rancher
+        restart: unless-stopped
+        volumes:
+            - '/opt/rancher:/var/lib/rancher'
+        ports:
+            - '80:80'
+            - '443:443'
+        privileged: false
+        image: run
