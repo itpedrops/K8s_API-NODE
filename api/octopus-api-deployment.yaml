@@ -7,6 +7,11 @@ metadata:
     app: octopus-api
 spec:
   replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
   selector:
     matchLabels:
       app: octopus-api
@@ -19,17 +24,43 @@ spec:
       - name: octopus-api
         image: gru.ocir.io/skyonecloud/control-api-octopus/apicontrol:v1
         imagePullPolicy: Always
+        #readinessProbe:
+          #httpGet:
+            #path: /xxx/xxx
+            #port: 8080
+          #initialDelaySeconds: 60
+          #periodSeconds: 10
+          #timeoutSeconds: 10
+        #livenessProbe:
+          #httpGet:
+            #path: /xxx/xxx
+            #port: 8080
+            #initialDelaySeconds: 60
+            #periodSeconds: 60
+            #timeoutSeconds: 10
+            #successThreshold: 2
+            #failureThreshold: 2
         ports:
         - containerPort: 8080
         env:
+        - name: SPRING_DATASOURCE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: SPRING_DATASOURCE_USERNAME
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: SPRING_DATASOURCE_PASSWORD          
         - name: API_URL
           value: "http://control.api.k8s.skyone.guru:8085/api/"
         - name: SPRING_DATASOURCE_URL
           value: "jdbc:postgresql://octopus-db-service:5432/octopus"
-        - name: SPRING_DATASOURCE_USERNAME
-          value: $colocar_senha_postgres
-        - name: SPRING_DATASOURCE_PASSWORD
-          value: $colocarsenha_postgres
+#        - name: SPRING_DATASOURCE_USERNAME
+#          value: $colocar_senha_postgres
+#        - name: SPRING_DATASOURCE_PASSWORD
+#          value: $colocarsenha_postgres          
         - name: ACTIVEMQ_HOST
           value: octopus-fila-service
         - name: ACTIVEMQ_PORT
