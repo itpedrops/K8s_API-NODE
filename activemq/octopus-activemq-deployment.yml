@@ -40,12 +40,22 @@ spec:
 #          name: mqtt
 #          protocol: TCP
         env:
+        - name: ACTIVEMQ_ADMIN_LOGIN
+          valueFrom:
+            secretKeyRef:
+              name: activemq-secret
+              key: ACTIVEMQ_ADMIN_LOGIN
+        - name: ACTIVEMQ_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: activemq-secret
+              key: ACTIVEMQ_ADMIN_PASSWORD            
         - name: ACTIVEMQ_ENABLED_AUTH
           value: "false"
-        - name: ACTIVEMQ_ADMIN_LOGIN
-          value: $NAME_USER
-        - name: ACTIVEMQ_ADMIN_PASSWORD
-          value: $PASSWORD
+#        - name: ACTIVEMQ_ADMIN_LOGIN
+#          value: $NAME_USER
+#        - name: ACTIVEMQ_ADMIN_PASSWORD
+#          value: $PASSWORD
         - name: ACTIVEMQ_ENABLED_SCHEDULER
           value: "true"
         - name: ACTIVEMQ_REMOVE_DEFAULT_ACCOUNT
