@@ -31,11 +31,11 @@ spec:
           name: octopus-db
         resources:
           requests:
-            cpu: "500m"
-            memory: "512Mi"
+            cpu: "256m"
+            memory: "768Mi"
           limits:
-            cpu: "1000m"
-            memory: "4096Mi"
+            cpu: "1024m"
+            memory: "3048Mi"
 
         volumeMounts:
         - name: octopus-db-volume

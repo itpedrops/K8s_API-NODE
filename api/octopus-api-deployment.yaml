@@ -6,7 +6,7 @@ metadata:
   labels:
     app: octopus-api
 spec:
-  replicas: 3
+  replicas: 1
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -69,11 +69,11 @@ spec:
           value: HEISHOP         
         resources:
           requests:
-            cpu: "1024m"
-            memory: "1024Mi"
+            cpu: "512m"
+            memory: "768Mi"
           limits:
-            cpu: "1024m"
-            memory: "2048Mi"
+            cpu: "768m"
+            memory: "1512Mi"
 #      imagePullPolicy: "ifNotPresent"
       imagePullSecrets:
       - name: ocirsecret
