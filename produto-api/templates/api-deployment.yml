@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: octopus-api
-  namespace: octopus-homolog
+  name: {{ .Release.Name }}-octopus-api-deployment
+  namespace: octopus-helm
   labels:
-    app: octopus-api
+    app: {{ .Release.Name }}-octopus-api
 spec:
   replicas: 1
   strategy:
@@ -14,11 +14,11 @@ spec:
       maxUnavailable: 1
   selector:
     matchLabels:
-      app: octopus-api
+      app: {{ .Release.Name }}-octopus-api
   template:
     metadata:
       labels:
-        app: octopus-api
+        app: {{ .Release.Name }}-octopus-api
     spec:
       containers:
       - name: octopus-api
@@ -26,7 +26,7 @@ spec:
         imagePullPolicy: Always
         #readinessProbe:
           #httpGet:
-            #path: /api
+            #path: /xxx/xxx
             #port: 8080
           #initialDelaySeconds: 60
           #periodSeconds: 10
